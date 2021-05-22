@@ -45,7 +45,7 @@ fun MainScreen(){
         GreetingList(greetingListState,
             { greetingListState.add(newNameStateContent.value) },
             newNameStateContent.value,
-            { newName -> newNameStateContent.value = newName})
+            { newName -> newNameStateContent.value = newName}) //new name the user entered
     }
 }
 
