@@ -1,5 +1,6 @@
 package com.example.dynamocontent
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,19 +12,19 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.dynamocontent.ui.theme.DynamoContentTheme
 
-//Using a list structure to store a list of names
-val namesList: ArrayList<String> = arrayListOf("Paul", "James", "Arinze", "Thandi", "Georgia")
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            GreetingList(names = namesList)
+            MainScreen()
         }
     }
 }
@@ -33,17 +34,25 @@ class MainActivity : ComponentActivity() {
 //using the advanced for loop, which should be easy to understand
 //then we want to print a text
 @Composable
-fun GreetingList(names: List<String>){
+fun MainScreen(){
+    val greetingListState = remember { mutableStateListOf<String>("Paul", "Amanda") }
     Column(modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.CenterHorizontally) {
-        for (name in names){
-            Greeting(name = name)
-        }
-        Button(onClick = { namesList.add("New name") }) {
-            Text(text = "Add new name")
-            
-        }
+        horizontalAlignment = Alignment.CenterHorizontally)
+    {
+        GreetingList(greetingListState) { greetingListState.add("Jideani") }
+    }
+}
+
+
+@Composable
+fun GreetingList(nameList: List<String>, buttonClick: () -> Unit){
+    for (name in nameList){
+        Greeting(name = name)
+    }
+    Button(onClick = buttonClick) {
+        Text(text = "Add new name")
+
     }
 }
 
@@ -56,6 +65,6 @@ fun Greeting(name: String) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    GreetingList(names = namesList)
+    MainScreen()
 
 }
